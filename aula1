@@ -1,0 +1,92 @@
+CREATE TABLE Produtos 
+( 
+ descricao lONGTEXT,
+ preco FLOAT NOT NULL,
+ codigoBarras VARCHAR(255) NOT NULL,  
+ idProdutos INT PRIMARY KEY AUTO_INCREMENT,  
+ UNIQUE (Codigo_Barras)
+); 
+
+CREATE TABLE Fornecedor 
+( 
+ razaoSocial VARCHAR(99),  
+ CNPJ INT NOT NULL,  
+ idLogradouro INT,  
+ idFornecedor INT PRIMARY KEY AUTO_INCREMENT,  
+ UNIQUE (CNPJ)
+); 
+
+CREATE TABLE Clientes 
+( 
+ nome VARCHAR(255),  
+ CPF INT NOT NULL,  
+ idLogradouro INT,  
+ idClientes INT PRIMARY KEY AUTO_INCREMENT,  
+ UNIQUE (CPF)
+); 
+
+CREATE TABLE Logradouro 
+( 
+ descricao lONGTEXT,
+ bairro VARCHAR(99),  
+ idCidade INT,  
+ idLogradouro INT PRIMARY KEY AUTO_INCREMENT,  
+); 
+
+CREATE TABLE Cidade 
+( 
+ descricao lONGTEXT,
+ estado CHAR(99),  
+ idCidade INT PRIMARY KEY AUTO_INCREMENT,  
+); 
+
+CREATE TABLE Vendas 
+( 
+ dataVenda DATE,  
+ valorTotal FLOAT,  
+ dataEntrega DATE,  
+ idClientes INT,  
+ idVendas INT PRIMARY KEY AUTO_INCREMENT,  
+); 
+
+CREATE TABLE Item_Vendas 
+( 
+ quantidade FLOAT NOT NULL,  
+ idProdutos INT,  
+ idVendas INT,  
+); 
+
+CREATE TABLE Item_Compras 
+( 
+ idProdutos INT,  
+ idCompras INT,  
+ quantidade FLOAT NOT NULL,  
+ idFornecedor INT,  
+); 
+
+CREATE TABLE Compras 
+( 
+ dataCompra DATE,  
+ valorTotal FLOAT,  
+ idFornecedor INT,  
+ dataEntrega DATE NOT NULL,  
+); 
+
+CREATE TABLE Estoque 
+( 
+ idProdutos INT,  
+ quantidade FLOAT,  
+ UNIQUE (idProdutos: FK)
+); 
+
+ALTER TABLE Fornecedor ADD FOREIGN KEY(idLogradouro) REFERENCES Logradouro (idLogradouro)
+ALTER TABLE Clientes ADD FOREIGN KEY(idLogradouro) REFERENCES Logradouro (idLogradouro)
+ALTER TABLE Logradouro ADD FOREIGN KEY(idCidade) REFERENCES Cidade (idCidade)
+ALTER TABLE Vendas ADD FOREIGN KEY(idClientes) REFERENCES Clientes (idClientes)
+ALTER TABLE Item_Vendas ADD FOREIGN KEY(idProdutos) REFERENCES Produtos (idProdutos)
+ALTER TABLE Item_Vendas ADD FOREIGN KEY(idVendas) REFERENCES Vendas (idVendas)
+ALTER TABLE Item_Compras ADD FOREIGN KEY(idProdutos) REFERENCES Produtos (idProdutos)
+ALTER TABLE Item_Compras ADD FOREIGN KEY(idCompras) REFERENCES Compras (idCompras)
+ALTER TABLE Item_Compras ADD FOREIGN KEY(idFornecedor) REFERENCES Fornecedor (idFornecedor)
+ALTER TABLE Compras ADD FOREIGN KEY(idFornecedor) REFERENCES Fornecedor (idFornecedor)
+ALTER TABLE Estoque ADD FOREIGN KEY(idProdutos) REFERENCES Produtos (idProdutos)
